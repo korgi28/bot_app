@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <!-- Важно для мобилок -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PC Master Service</title>
+    <!-- Подключаем скрипт Telegram -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* Используем переменные Telegram, чтобы сайт подстраивался под тему (светлая/темная) */
+        body {
+            font-family: sans-serif;
+            background-color: var(--tg-theme-bg-color, #fff);
+            color: var(--tg-theme-text-color, #000);
+            padding: 20px;
+            text-align: center;
+        }
+        .service-card {
+            background: var(--tg-theme-secondary-bg-color, #f0f0f0);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .service-card.selected {
+            border-color: var(--tg-theme-button-color, #248bcf);
+        }
+        button#main-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--tg-theme-button-color, #248bcf);
+            color: var(--tg-theme-button-text-color, #fff);
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Выберите услуги:</h2>
+    
+    <div class="service-card" onclick="toggleService(this, 'Переустановка Win')">Переустановка Windows</div>
+    <div class="service-card" onclick="toggleService(this, 'Замена термопасты')">Замена термопасты</div>
+    <div class="service-card" onclick="toggleService(this, 'Смазка свитчей')">Смазка свитчей</div>
+
+    <button id="main-btn">Оформить заказ</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand(); // Развернуть на весь экран
+
+        let selectedServices = [];
+
+        function toggleService(element, service) {
+            element.classList.toggle('selected');
+            if (selectedServices.includes(service)) {
+                selectedServices = selectedServices.filter(s => s !== service);
+            } else {
+                selectedServices.push(service);
+            }
+        }
+
+        // При нажатии на кнопку отправляем данные боту
+        document.getElementById("main-btn").addEventListener("click", () => {
+            if (selectedServices.length === 0) {
+                tg.showAlert("Выберите хотя бы одну услугу!");
+            } else {
+                let data = {
+                    services: selectedServices,
+                    total: selectedServices.length
+                };
+                tg.sendData(JSON.stringify(data)); // Отправляем JSON строку боту
+            }
+        });
+    </script>
+</body>
+</html>
