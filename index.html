@@ -1,0 +1,222 @@
+> ChatGPT | Nano Banana:
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GRAVI VPN</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f0a1e;
+            --card-bg: #1a142d;
+            --neon-purple: #bc13fe;
+            --text-color: #ffffff;
+            --sub-text: #b3b3b3;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Верхняя плашка с инфо */
+        .user-card {
+            width: 100%;
+            background: var(--card-bg);
+            border: 2px solid var(--neon-purple);
+            border-radius: 15px;
+            padding: 15px;
+            box-sizing: border-box;
+            box-shadow: 0 0 15px rgba(188, 19, 254, 0.3);
+            margin-bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-card div {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+        }
+
+        .user-card span {
+            color: var(--neon-purple);
+            font-weight: bold;
+        }
+
+        /* Сетка кнопок */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .neon-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--neon-purple);
+            border-radius: 12px;
+            color: white;
+            padding: 20px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+        }
+
+        .neon-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.6);
+        }
+
+        /* Длинная кнопка внизу */
+        .wide {
+
+> ChatGPT | Nano Banana:
+            grid-column: span 2;
+        }
+
+        /* Стили для окон выбора (меню) */
+        .menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 10, 30, 0.95);
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .menu-content {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .back-btn {
+            margin-top: 30px;
+            color: var(--sub-text);
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        h2 {
+            color: var(--neon-purple);
+            text-shadow: 0 0 10px var(--neon-purple);
+            margin-bottom: 20px;
+        }
+
+        .ref-link {
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px dashed var(--neon-purple);
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Верхняя плашка -->
+    <div class="user-card">
+        <div>Ник: <span id="username">Загрузка...</span></div>
+        <div>Баланс: <span id="balance">0.00 ₽</span></div>
+        <div>Подписка: <span id="sub-status">Не активна</span></div>
+    </div>
+
+    <!-- Основные кнопки -->
+    <div class="btn-grid">
+        <div class="neon-btn" onclick="showMenu('subs')">Подписки</div>
+        <div class="neon-btn" onclick="showMenu('pay')">Пополнение</div>
+        <div class="neon-btn wide" onclick="showMenu('ref')">Реферальная система</div>
+    </div>
+
+    <!-- Меню подписок -->
+    <div id="menu-subs" class="menu-overlay">
+        <h2>ВЫБОР ТАРИФА</h2>
+        <div class="menu-content">
+            <div class="neon-btn" onclick="sendData('Minimal Sub')">MINIMAL — 199₽</div>
+            <div class="neon-btn" onclick="sendData('Medium Sub')">MEDIUM — 399₽</div>
+            <div class="neon-btn" onclick="sendData('Maximal Sub')">MAXIMAL — 699₽</div>
+        </div>
+        <div class="back-btn" onclick="hideMenus()">← Назад</div>
+    </div>
+
+    <!-- Меню пополнения -->
+    <div id="menu-pay" class="menu-overlay">
+        <h2>ПОПОЛНЕНИЕ</h2>
+        <div class="menu-content">
+            <div class="neon-btn" onclick="sendData('Pay SBP')">СБП</div>
+            <div class="neon-btn" onclick="sendData('Pay Crypto')">КРИПТОВАЛЮТА</div>
+            <div class="neon-btn" onclick="sendData('Pay Card RU')">КАРТЫ РФ</div>
+        </div>
+        <div class="back-btn" onclick="hideMenus()">← Назад</div>
+    </div>
+
+    <!-- Меню рефералов -->
+    <div id="menu-ref" class="menu-overlay">
+        <h2>ВАША ССЫЛКА</h2>
+        <div class="menu-content">
+            <div class="ref-link" id="ref-url">https://t.me/GravisVpnBot?start=user12345</div>
+            <div class="neon-btn" onclick="copyRef()">Копировать</div>
+        </div>
+        <div class="back-btn" onclick="hideMenus()">← Назад</div>
+    </div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // Установка данных пользователя
+        const username = tg.initDataUnsafe?.user?.username || tg.initDataUnsafe?.user?.first_name || "Пользователь";
+        document.getElementById("username").innerText = "@" + username;
+        document.getElementById("ref-url").innerText = "https://t.me/YourBot?start=" + (tg.initDataUnsafe?.user?.id || "ID");
+
+        function showMenu(menuId) {
+
+> ChatGPT | Nano Banana:
+hideMenus();
+            document.getElementById('menu-' + menuId).style.display = 'flex';
+        }
+
+        function hideMenus() {
+            document.querySelectorAll('.menu-overlay').forEach(el => el.style.display = 'none');
+        }
+
+        function sendData(action) {
+            tg.sendData(action); // Отправляет текст боту и закрывает Mini App
+        }
+
+        function copyRef() {
+            const link = document.getElementById("ref-url").innerText;
+            navigator.clipboard.writeText(link);
+            tg.showAlert("Ссылка скопирована!");
+        }
+    </script>
+</body>
+</html>
